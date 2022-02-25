@@ -3,6 +3,7 @@
 ##############################################
 
 # Figure 1.1: AMZN close stock price plot
+install.packages('astsa')
 install.packages('quantmod') #'quantmod' package used to import data into R
 require('quantmod')
 getSymbols('AMZN', src='yahoo') # Source: Yahoo Finance
