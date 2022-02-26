@@ -2,7 +2,7 @@
 ### Chapter 5: State Space Models ###
 #####################################
 
-# HMM Fitting
+# Figure 5.X: HMM Fitting
 install.packages("depmixS4") # package used for fitting hmm
 library(depmixS4)
 library(astsa)
@@ -19,6 +19,3 @@ para.mle = as.vector(getpars(fm3)[-(1:3)])
 permu = matrix(c(0,0,1,0,1,0,1,0,0), 3,3) 
 (mtrans.mle = permu%*%round(t(matrix(para.mle[1:9],3,3)),3)%*%permu) 
 (norms.mle = round(matrix(para.mle[10:15],2,3),3)%*%permu)
-
-abc
-
