@@ -137,3 +137,19 @@ par(mfrow=c(1,1))
 tsplot(x=Time, y=Amazon, ylab="AMZN Close Price", col="red")
 lines(fit4vals, col="blue")
 legend('topleft', col=c("red", "blue"), lty=1, lwd = 2, legend=c("Close price", "Model 4"), bty="n")
+
+
+install.packages("zoo")
+library("zoo")
+length(AMZN)
+tsplot(AMZN[3717:3813], col="red", ylab="AMZN")
+legend('topright', col=c("red", "blue", "green"), lty=1, lwd = 2, legend=c("Close price", "10 day MA", "50 day MA"), bty="n")
+lines(rollmean(AMZN[3707:3813], 10), col="blue", type="l")
+lines(rollmean(AMZN[3667:3813], 50), col="green", type="l")
+
+# 16/11/2021 - 24/2/2022
+AMZN[3717:3813]
+# day 20: 3312.75
+# day 33: 3676.57
+
+
