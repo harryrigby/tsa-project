@@ -63,8 +63,8 @@ abline(0,0)
 warnings()
 
 # fitting model to simulated data
-summary(fit(fit.ret <- depmix(response=returns~1, nstates=3, data=data.frame(returns))))
-summary(fm2 <- fit(fit.ret))
+summary(fit(fit.ret <- depmix(response=returns~1, nstates=2, data=data.frame(returns))))
+summary(fit(fit.ret))
 # aic = -2log(L) + 2p;  p = (# states)^2 + (# parameters of state process)*(# states) - 1
 2*183.2081 + 2*(2^2 + 4*2 - 1)
 
