@@ -64,7 +64,7 @@ mod2 <- depmix(y~1, nstates=2, data=data.frame(y))
 summary(fm2 <- fit(mod2))
 
 # 3 state model
-mod3 <- depmix(y~1, nstates=2, data=data.frame(y))
+mod3 <- depmix(y~1, nstates=3, data=data.frame(y))
 summary(fm3 <- fit(mod3))
 
 # 4 state model
@@ -83,7 +83,11 @@ tsplot(y, ylab='DJIA Daily Returns', col=gray(.7), ylim=c(-.11,.11))
 culer = 5-posterior(fm4)[,1];
 text(y, col=culer, labels=posterior(fm4)[,1])
 
-
-
+# ------------------------------------------------------------------------------
+# 4-state model state changes
+VP <- posterior(fm4, type="viterbi")[,1]
+for(i in 1:1000)
+  x[i] <- if(abs(VP[i+1]-VP[i])>0) print(1) else print(0)
+table(x)[2] # total no. of state changes (i.e. no. of 1s in x) = 371
 
 
