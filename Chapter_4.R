@@ -4,7 +4,6 @@
 
 install.packages('quantmod')
 install.packages("tseries")
-install.packages("fGarch")
 
 # -----------------------------------------------------------------------------
 # Figure 4.1: FTSE 100 price and returns
@@ -47,4 +46,3 @@ par(mfrow=c(1,1)); acf(ftse.res-mean(ftse.res))
 # -----------------------------------------------------------------------------
 # Figure 4.5: Residual Q-Q plot
 par(mfrow=c(1,1)); qqnorm(ftse.res); qqline(ftse.res)
-
