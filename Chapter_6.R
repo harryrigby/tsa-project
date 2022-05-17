@@ -18,7 +18,11 @@ summary(fm3 <- fit(mod3))
 tsplot(y, main="", ylab='DJIA Daily Returns', col=gray(.7),
        ylim=c(-.11,.11))
 culer = 4-posterior(fm3)[,1]; culer[culer==3]=4 # switch labels 1 and 3 
-text(y, col=culer, labels=4-posterior(fm3)[,1])
+text(y, col=culer, labels=posterior(fm3)[,1])
+ts.plot(posterior(fm4, type="viterbi")[,1]) # state 3 from 421 to 566 
+
+T <- matrix(c(0.912, 0, 0.088,0, 0.992, 0.008, 0.042, 0.002, 0.956),3,3,byrow=TRUE)
+T
 
 ### Histogram Plot ###
 para.mle = as.vector(getpars(fm3)[-(1:3)])
@@ -27,11 +31,12 @@ permu = matrix(c(0,0,1,0,1,0,1,0,0), 3,3)
 (norms.mle = round(matrix(para.mle[10:15],2,3),3)%*%permu)
 
 # 2 state model
-mod2 <- depmix(y~1, nstates=2, data=data.frame(y))x
+fit(mod2 <- depmix(y~1, nstates=2, data=data.frame(y)))
 summary(fm2 <- fit(mod2))
-logLik(mod2) # -919.0631
--2*L2+ (2)^2 + 2*(2) - 1                            # AIC = 1845.126
--2*logLik(mod2)+ ((2)^2 + 2*(2) - 1)*log(length(y)) # BIC = 1886.48
+logLik(mod2) # -223.21
+-2*(-223.21)+ (2)^2 + 2*(2) - 1                     # AIC = 453.42
+-2*(-223.21)+ ((2)^2 + 2*(2) - 1)*log(length(y))    # BIC = 485.0702
+
 tsplot(y, main="", ylab='DJIA Daily Returns', col=gray(.7),
        ylim=c(-.11,.11))
 culer = 3-posterior(fm2)[,1];
@@ -45,26 +50,26 @@ permu = matrix(c(0,1,1,0), 2,2)
 hist(y, breaks=20, xlim=c(-0.11, 0.11), xlab="Returns", main="", ylim=c(0,350))
 
 
-hist# 3 state
-mod3 <- depmix(y~1, nstates=3, data=data.frame(y))
+# 3 state
+fit(mod3 <- depmix(y~1, nstates=3, data=data.frame(y)))
 summary(fm3 <- fit(mod3))
-logLik(mod3) # -919.0631
--2*logLik(mod3)+ (3)^2 + 2*(3) - 1                  # AIC = 1852.126
--2*logLik(mod3)+ ((3)^2 + 2*(3) - 1)*log(length(y)) # BIC = 1934.835
+logLik(mod3) # -216.326
+-2*-216.326+ (3)^2 + 2*(3) - 1                  # AIC = 446.652
+-2*-216.326+ ((3)^2 + 2*(3) - 1)*log(length(y)) # BIC = 509.9525
 
 # 4 state
-mod4 <- depmix(y~1, nstates=4, data=data.frame(y))
+fit(mod4 <- depmix(y~1, nstates=4, data=data.frame(y)))
 summary(fm4 <- fit(mod4))
 logLik(mod4)
--2*logLik(mod4)+ (4)^2 + 2*(4) - 1             # AIC = 1861.126
--2*logLik(mod4)+ ((4)^2 + 2*(4) - 1)*log(1000) # BIC = 1997.005
+-2*(-212.539) + (4)^2 + 2*(4) - 1                 # AIC = 448.078
+-2*(-212.539)+ ((4)^2 + 2*(4) - 1)*log(length(y)) # BIC = 552.0716
 
 # 5 state
-mod5 <- depmix(y~1, nstates=5, data=data.frame(y))
+fit(mod5 <- depmix(y~1, nstates=5, data=data.frame(y)))
 summary(fm5 <- fit(mod5))
 logLik(mod5)
--2*logLik(mod5)+ (5)^2 + 2*(5) - 1             # AIC = 1872.126
--2*logLik(mod5)+ ((5)^2 + 2*(5) - 1)*log(1000) # BIC = 2072.99
+-2*(-209.2614 )+ (5)^2 + 2*(5) - 1                  # AIC = 452.5228
+-2*(-209.2614 )+ ((5)^2 + 2*(5) - 1)*log(length(y)) # BIC = 606.2525
 
 
 
@@ -81,8 +86,6 @@ culer=c(1,2,4); pi.hat = colSums(posterior(fm2)[-1,2:4])/length(y); for (i in 1:
 
 
 
-
-
 x <- seq(min(y), max(y), length=100)
 s1 <- dnorm(x, mean=0, sd=0.01)
 s2 <- dnorm(x, mean=-0.002, sd=0.03)
@@ -91,3 +94,22 @@ lines(x, s1, col="black")
 lines(x, s2, col="red")
 legend('topleft', col=c("black", "red"), lty=1, lwd = 2, 
        legend=c("State 1 (low volatility)", "State 2 (high volatility)"), bty="n")
+
+
+tsplot(y, main="", ylab='DJIA Daily Returns', col=gray(.7),
+       ylim=c(-.11,.11))
+culer = 5-posterior(fm4)[,1];
+text(y, col=culer, labels=posterior(fm4)[,1])
+
+VP <- posterior(fm4, type="viterbi")[,1]
+fun <- function(VP){return(if(abs(VP[i+1]-VP[i])<1) print(0) else print(1))}
+sapply(2:1000, FUN = fun)
+
+
+for(i in 1:1000)
+  x[i] <- if(abs(VP[i+1]-VP[i])>0) print(1) else print(0)
+table(x)[2] # total no. of state changes (i.e. no. of 1s in x) = 371
+
+x <- c("")
+
+

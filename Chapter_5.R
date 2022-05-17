@@ -71,6 +71,15 @@ summary(fm3 <- fit(mod3))
 mod4 <- depmix(y~1, nstates=4, data=data.frame(y))
 summary(fm4 <- fit(mod4))
 
+# Gaussian iid
+par(mfrow=c(1,1)); qqnorm(y); qqline(y)
+
+hist(y, breaks=20, xlim=c(-0.10,0.10), freq=FALSE)
+xfit <- seq(min(y), max(y), length = 40) 
+yfit <- dnorm(xfit, mean = mean(y), sd = sd(y)) 
+yfit <- yfit * diff(h$mids[1:2]) * length(y) 
+lines(xfit, yfit, col = "blue", lwd = 1)
+
 # ------------------------------------------------------------------------------
 # Figure 5.7: 3-state plot
 tsplot(y, ylab='DJIA Daily Returns', col=gray(.7), ylim=c(-.11,.11))
